@@ -1,0 +1,71 @@
+apply plugin: 'java'
+
+ext {
+    /**
+     * Run commands to upload to https://bintray.com/
+     *
+     * ./gradlew microsoft-translator-java-api:install
+     * ./gradlew microsoft-translator-java-api:bintrayUpload
+     */
+
+    bintrayRepo = 'maven'
+    bintrayName = 'microsoft-translator-java-api'
+
+    publishedGroupId = 'io.github.firemaples'
+    libraryName = 'microsoft-translator-java-api'
+    artifact = 'microsoft-translator-java-api'
+
+    libraryDescription = 'A Java wrapper for the Microsoft Translator API'
+
+    siteUrl = 'https://github.com/firemaples/microsoft-translator-java-api'
+    gitUrl = 'https://github.com/firemaples/microsoft-translator-java-api.git'
+
+    libraryVersion = '0.8.8.1'
+
+    developerId = 'firemaples'
+    developerName = 'Louis Chen'
+    developerEmail = 'firemaples@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+sourceSets {
+    main {
+//        java {
+//            srcDir '../src/main/java'
+//        }
+//        output.classesDir = "$workDir/client/program"
+    }
+    test {
+//        java {
+//            srcDir '../src/test/java'
+//        }
+//        resources {
+//            srcDir '../src/test/resources'
+//        }
+//        output.classesDir = "$workDir/client/tests"
+//        output.resourcesDir = "$workDir/client/tests"
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.googlecode.json-simple:json-simple:1.1'
+    compile 'com.google.code.gson:gson:2.8.5'
+}
+
+task fatJar(type: Jar) {
+    baseName = project.name + '-with-dependencies'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
+
+//Before running 'fatJar', comment these two lines
+apply from: 'installv1.gradle'
+apply from: 'bintrayv1.gradle'
